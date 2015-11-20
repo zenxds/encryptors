@@ -99,7 +99,7 @@ function decrypt(ciphertext, password) {
     }
 
     // ---- </TEA> ----
-    var plaintext = longsToStr(v).replace(/\u0000/g, '');;
+    var plaintext = longsToStr(v).replace(/\u0000/g, '');
     return unescape(plaintext);
 }
 
