@@ -1,79 +1,85 @@
-var Utf8 = require('./utf8');
+(function(global) {
+    // 如果不想依赖Utf8则可以使用原生的encodeURI
+    var Utf8 = require('./utf8');
 
-var code = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
+    var nativeAtob = global.atob;
+    var nativeBtoa = global.btoa;
+    var code = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
 
-var encode = function(str, utf8encode) { // http: //tools.ietf.org/html/rfc4648
-    utf8encode = (typeof utf8encode == 'undefined') ? false : utf8encode;
-    var o1, o2, o3, bits, h1, h2, h3, h4, e = [],
-        pad = '',
-        c, plain, coded;
-    var b64 = code;
+    // http://www.webtoolkit.info/javascript-base64.html
+    var encode = nativeBtoa || function(input) {
+        var output = "";
+        var chr1, chr2, chr3, enc1, enc2, enc3, enc4;
+        var i = 0;
 
-    plain = utf8encode ? Utf8.encode(str) : str;
+        // input = encodeURI(input);
+        input = Utf8.encode(input);
 
-    c = plain.length % 3; // pad string to length of multiple of 3
-    if (c > 0) {
-        while (c++ < 3) {
-            pad += '=';
-            plain += '\0';
+        while (i < input.length) {
+            chr1 = input.charCodeAt(i++);
+            chr2 = input.charCodeAt(i++);
+            chr3 = input.charCodeAt(i++);
+
+            // 第一个字符前6位
+            enc1 = chr1 >> 2;
+            // 第一个字符后两位加第二个字符前4位
+            enc2 = ((chr1 & 3) << 4) | (chr2 >> 4);
+            // 第二个字符后四位加第三个字符前两位
+            enc3 = ((chr2 & 15) << 2) | (chr3 >> 6);
+            // 第三个字符后六位
+            enc4 = chr3 & 63;
+
+            if (isNaN(chr2)) {
+                enc3 = enc4 = 64;
+            } else if (isNaN(chr3)) {
+                enc4 = 64;
+            }
+
+            output = output + code.charAt(enc1) + code.charAt(enc2) +
+                code.charAt(enc3) + code.charAt(enc4);
         }
-    }
-    // note: doing padding here saves us doing special-case packing for trailing 1 or 2 chars
+        return output;
+    };
 
-    for (c = 0; c < plain.length; c += 3) { // pack three octets into four hexets
-        o1 = plain.charCodeAt(c);
-        o2 = plain.charCodeAt(c + 1);
-        o3 = plain.charCodeAt(c + 2);
+    var decode = nativeAtob || function(input) {
+        var output = "";
+        var chr1, chr2, chr3;
+        var enc1, enc2, enc3, enc4;
+        var i = 0;
 
-        bits = o1 << 16 | o2 << 8 | o3;
+        // 保证格式正确
+        input = input.replace(/[^A-Za-z0-9\+\/\=]/g, "");
 
-        h1 = bits >> 18 & 0x3f;
-        h2 = bits >> 12 & 0x3f;
-        h3 = bits >> 6 & 0x3f;
-        h4 = bits & 0x3f;
+        while (i < input.length) {
 
-        // use hextets to index into code string
-        e[c / 3] = b64.charAt(h1) + b64.charAt(h2) + b64.charAt(h3) + b64.charAt(h4);
-    }
-    coded = e.join(''); // join() is far faster than repeated string concatenation in IE
+            enc1 = code.indexOf(input.charAt(i++));
+            enc2 = code.indexOf(input.charAt(i++));
+            enc3 = code.indexOf(input.charAt(i++));
+            enc4 = code.indexOf(input.charAt(i++));
 
-    // replace 'A's from padded nulls with '='s
-    coded = coded.slice(0, coded.length - pad.length) + pad;
+            chr1 = (enc1 << 2) | (enc2 >> 4);
+            chr2 = ((enc2 & 15) << 4) | (enc3 >> 2);
+            chr3 = ((enc3 & 3) << 6) | enc4;
 
-    return coded;
-};
+            output = output + String.fromCharCode(chr1);
+            if (enc3 != 64) {
+                output = output + String.fromCharCode(chr2);
+            }
+            if (enc4 != 64) {
+                output = output + String.fromCharCode(chr3);
+            }
+        }
 
-var decode = function(str, utf8decode) {
-    utf8decode = (typeof utf8decode == 'undefined') ? false : utf8decode;
-    var o1, o2, o3, h1, h2, h3, h4, bits, d = [],
-        plain, coded;
-    var b64 = code;
+        // output = decodeURI(output);
+        output = Utf8.decode(output);
+        return output;
+    };
 
-    coded = utf8decode ? Utf8.decode(str) : str;
+    module.exports = {
+        btoa: encode,
+        atob: decode,
+        encode: encode,
+        decode: decode
+    };
 
-    for (var c = 0; c < coded.length; c += 4) { // unpack four hexets into three octets
-        h1 = b64.indexOf(coded.charAt(c));
-        h2 = b64.indexOf(coded.charAt(c + 1));
-        h3 = b64.indexOf(coded.charAt(c + 2));
-        h4 = b64.indexOf(coded.charAt(c + 3));
-
-        bits = h1 << 18 | h2 << 12 | h3 << 6 | h4;
-
-        o1 = bits >>> 16 & 0xff;
-        o2 = bits >>> 8 & 0xff;
-        o3 = bits & 0xff;
-
-        d[c / 4] = String.fromCharCode(o1, o2, o3);
-        // check for padding
-        if (h4 == 0x40) d[c / 4] = String.fromCharCode(o1, o2);
-        if (h3 == 0x40) d[c / 4] = String.fromCharCode(o1);
-    }
-    plain = d.join(''); // join() is far faster than repeated string concatenation in IE
-
-    return utf8decode ? Utf8.decode(plain) : plain;
-};
-
-module.exports = {
-    encode: encode,
-    decode: decode
-};
+})(this);

@@ -5,6 +5,13 @@
  * 在js中就是明文分成4个字符一组
  * 密钥应该是长度为16的字符
  */
+var Utf8 = require('./utf8');
+var base64 = require('./base64');
+
+// encode保证只有单字节的字符，但是也可以使用原生的encodeURI来替代，这样可以不依赖Utf8库
+var encode = Utf8.encode;
+var decode = Utf8.decode;
+// base64也可以不依赖，使用encodeURI等来替代
 
 function strToLongs(s) {
     var l = new Array(Math.ceil(s.length / 4));
@@ -32,9 +39,7 @@ function encrypt(plaintext, password) {
         return '';
     }
 
-    // escape之后保证只有单字节的字符
-    // 也可以不用escape, 只要能保证字符是单字节，同时在解码函数里能解出来就行
-    var v = strToLongs(escape(plaintext));
+    var v = strToLongs(encode(plaintext));
 
     // 算法不支持长度小于2，手动添加一个值
     if (v.length <= 1) {
@@ -42,7 +47,7 @@ function encrypt(plaintext, password) {
     }
 
     // simply convert first 16 chars of password as key
-    var k = strToLongs(escape(password).slice(0, 16));
+    var k = strToLongs(encode(password).slice(0, 16));
     var n = v.length;
 
     // ---- <TEA coding> ----
@@ -68,7 +73,7 @@ function encrypt(plaintext, password) {
     var ciphertext = longsToStr(v);
 
     // 也可以不用escape, 使用unicode编码，base64等，只要在解码函数里能解出来就行
-    return escape(ciphertext);
+    return base64.encode(ciphertext);
 }
 
 function decrypt(ciphertext, password) {
@@ -76,8 +81,8 @@ function decrypt(ciphertext, password) {
         return '';
     }
 
-    var v = strToLongs(unescape(ciphertext));
-    var k = strToLongs(escape(password).slice(0, 16));
+    var v = strToLongs(base64.decode(ciphertext));
+    var k = strToLongs(encode(password).slice(0, 16));
     var n = v.length;
 
     // ---- <TEA decoding> ----
@@ -100,7 +105,7 @@ function decrypt(ciphertext, password) {
 
     // ---- </TEA> ----
     var plaintext = longsToStr(v).replace(/\u0000/g, '');
-    return unescape(plaintext);
+    return decode(plaintext);
 }
 
 module.exports = {
