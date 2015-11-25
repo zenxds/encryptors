@@ -1,5 +1,8 @@
 module.exports = {
     encrypt: function(str) {
+        if (!str) {
+            return str;
+        }
         var ret = [];
         for (var i = 0; i < str.length; i++) {
             ret.push(str.charCodeAt(i).toString(16));
@@ -8,6 +11,9 @@ module.exports = {
     },
 
     decrypt: function (str) {
+        if (!str) {
+            return str;
+        }
         var ret = [];
         str = str.split(',');
         for (var i = 0; i < str.length; i++) {
