@@ -1,12 +1,14 @@
 {
-    "name": "encryptors",
-    "version": "0.1.0",
-    "author": "zenxds",
-    "devDependencies": {
-        "expect.js": "~0.3.1",
-        "mocha": "~2.3.3"
-    },
-    "scripts": {
-        "test": "mocha --recursive --watch --debug --bail --timeout 30000"
-    }
+  "name": "encryptors",
+  "version": "0.1.0",
+  "author": "zenxds",
+  "devDependencies": {
+    "expect.js": "~0.3.1",
+    "mocha": "~2.3.3",
+    "webpack": "~1.12.9"
+  },
+  "scripts": {
+    "build": "webpack && webpack --no-minimize",
+    "test": "mocha --recursive --watch --debug --bail --timeout 30000"
+  }
 }

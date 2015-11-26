@@ -20,7 +20,7 @@ for (key in map) {
     }
 }
 
-function encode(str) {
+function encrypt(str) {
     if (!str) {
         return '';
     }
@@ -42,7 +42,7 @@ function encode(str) {
     return ret.join('');
 }
 
-function decode(str) {
+function decrypt(str) {
     if (!str) {
         return '';
     }
@@ -58,6 +58,6 @@ function decode(str) {
 }
 
 module.exports = {
-    encode: encode,
-    decode: decode
+    encrypt: encrypt,
+    decrypt: decrypt
 }
