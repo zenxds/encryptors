@@ -1,5 +1,6 @@
 /**
  * 利用零宽字符隐藏
+ * http://unicode-table.com/en/search/?q=Zero+Width
  */
 var Utf8 = require('./utf8');
 
