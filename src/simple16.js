@@ -1,7 +1,11 @@
+/**
+ * 16可以替换成2-36任意
+ * @type {Object}
+ */
 module.exports = {
     encrypt: function(str) {
         if (!str) {
-            return str;
+            return '';
         }
         var ret = [];
         for (var i = 0; i < str.length; i++) {
@@ -12,7 +16,7 @@ module.exports = {
 
     decrypt: function (str) {
         if (!str) {
-            return str;
+            return '';
         }
         var ret = [];
         str = str.split(',');

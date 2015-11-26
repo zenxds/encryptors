@@ -20,7 +20,7 @@
  */
 function encode(str) {
     if (!str) {
-        return str;
+        return '';
     }
 
     // U+0080 - U+07FF => 2 bytes 110yyyyy, 10zzzzzz
@@ -43,7 +43,7 @@ function encode(str) {
 
 function decode(str) {
     if (!str) {
-        return str;
+        return '';
     }
 
     // 跟上面转换过的范围一一对应

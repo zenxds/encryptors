@@ -13,7 +13,7 @@ var encryptTemplate = function(left, right) {
 
     return function(v) {
 
-        var ret = "";
+        var ret = '';
         for (var i = 0; i < v.length; i++) {
             var c = v.charCodeAt(i);
             var a = c >> right;
@@ -28,7 +28,7 @@ var encryptTemplate = function(left, right) {
 
 var decryptTemplate = function(left, right) {
     return function(v) {
-        var ret = "";
+        var ret = '';
         for (var i = 0; i < v.length; i++) {
             var c = v.charCodeAt(i);
             var a = c >> left;
@@ -41,6 +41,7 @@ var decryptTemplate = function(left, right) {
     }
 };
 
+// 还用5-3,6-2,7-1未使用
 var EA = encryptTemplate(1, 7);
 var EB = encryptTemplate(2, 6);
 var EC = encryptTemplate(3, 5);
@@ -52,12 +53,18 @@ var DC = decryptTemplate(3, 5);
 var DD = decryptTemplate(4, 4);
 
 var encrypt = function(str) {
+    if (!str) {
+        return '';
+    }
+
     // str = encodeURI(str)
     str = Utf8.encode(str);
 
     var ret = '',
         method, order;
 
+
+    // 自己组合可以产生N种算法
     for (var i = 0; i < str.length; i++) {
         order = i % 8;
 
@@ -77,6 +84,9 @@ var encrypt = function(str) {
 };
 
 var decrypt = function(str) {
+    if (!str) {
+        return '';
+    }
 
     var ret = '',
         method, order;

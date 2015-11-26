@@ -4,11 +4,16 @@
 
     var nativeAtob = global.atob;
     var nativeBtoa = global.btoa;
-    var code = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
+    // code顺序可以自定义
+    var code = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
 
     // http://www.webtoolkit.info/javascript-base64.html
     var encode = nativeBtoa || function(input) {
-        var output = "";
+        if (!input) {
+            return '';
+        }
+
+        var output = '';
         var chr1, chr2, chr3, enc1, enc2, enc3, enc4;
         var i = 0;
 
@@ -42,13 +47,17 @@
     };
 
     var decode = nativeAtob || function(input) {
-        var output = "";
+        if (!input) {
+            return '';
+        }
+
+        var output = '';
         var chr1, chr2, chr3;
         var enc1, enc2, enc3, enc4;
         var i = 0;
 
         // 保证格式正确
-        input = input.replace(/[^A-Za-z0-9\+\/\=]/g, "");
+        input = input.replace(/[^A-Za-z0-9\+\/\=]/g, '');
 
         while (i < input.length) {
 
