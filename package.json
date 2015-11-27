@@ -8,7 +8,7 @@
     "webpack": "~1.12.9"
   },
   "scripts": {
-    "build": "webpack && webpack --no-minimize",
+    "build": "webpack && webpack -p",
     "test": "mocha --recursive --watch --debug --bail --timeout 30000"
   }
 }

@@ -64,10 +64,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	var Utf8 = __webpack_require__(1);
 	var base64 = __webpack_require__(2);
 
-	// encode保证只有单字节的字符，但是也可以使用原生的encodeURI来替代，这样可以不依赖Utf8库
+	// encode保证只有单字节的字符，但是也可以使用原生的encodeURIComponent来替代，这样可以不依赖Utf8库
 	var encode = Utf8.encode;
 	var decode = Utf8.decode;
-	// base64也可以不依赖，使用encodeURI等来替代
+	// base64也可以不依赖，使用encodeURIComponent等来替代
 
 	function strToLongs(s) {
 	    var l = new Array(Math.ceil(s.length / 4));
@@ -128,7 +128,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    var ciphertext = longsToStr(v);
 
-	    // 也可以不用escape, 使用unicode编码，base64等，只要在解码函数里能解出来就行
+	    // 使用unicode编码，base64等，只要在解码函数里能解出来就行
 	    return base64.encode(ciphertext);
 	}
 

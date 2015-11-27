@@ -2,13 +2,7 @@ var path = require('path');
 var webpack = require("webpack");
 
 var plugins = [];
-var minimize = process.argv.indexOf('--no-minimize') === -1;
-
-if (minimize) {
-    plugins.push(new webpack.optimize.UglifyJsPlugin({
-
-    }));
-}
+var minimize = process.argv.indexOf('-p') > -1 || process.argv.indexOf('--optimize-minimize') > -1;
 
 module.exports = {
     context: __dirname,
