@@ -64,11 +64,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	var Utf8 = __webpack_require__(1);
 	var base64 = __webpack_require__(2);
 
-	// encode保证只有单字节的字符，但是也可以使用原生的encodeURIComponent来替代，这样可以不依赖Utf8库
-	var encode = Utf8.encode;
-	var decode = Utf8.decode;
-	// base64也可以不依赖，使用encodeURIComponent等来替代
-
 	function strToLongs(s) {
 	    var l = new Array(Math.ceil(s.length / 4));
 	    for (var i = 0; i < l.length; i++) {
@@ -95,7 +90,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        return '';
 	    }
 
-	    var v = strToLongs(encode(plaintext));
+	    var v = strToLongs(Utf8.encode(plaintext));
 
 	    // 算法不支持长度小于2，手动添加一个值
 	    if (v.length <= 1) {
@@ -103,7 +98,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 
 	    // simply convert first 16 chars of password as key
-	    var k = strToLongs(encode(password).slice(0, 16));
+	    var k = strToLongs(Utf8.encode(password).slice(0, 16));
 	    var n = v.length;
 
 	    // ---- <TEA coding> ----
@@ -138,7 +133,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 
 	    var v = strToLongs(base64.decode(ciphertext));
-	    var k = strToLongs(encode(password).slice(0, 16));
+	    var k = strToLongs(Utf8.encode(password).slice(0, 16));
 	    var n = v.length;
 
 	    // ---- <TEA decoding> ----
@@ -161,7 +156,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    // ---- </TEA> ----
 	    var plaintext = longsToStr(v).replace(/\u0000/g, '');
-	    return decode(plaintext);
+	    return Utf8.decode(plaintext);
 	}
 
 	module.exports = {
