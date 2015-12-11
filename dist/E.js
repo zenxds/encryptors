@@ -133,7 +133,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        } else {
 	            method = ED;
 	        }
-	        ret += method(str[i]);
+	        ret += method(str.charAt(i));
 	    }
 
 	    return ret;
@@ -159,7 +159,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        } else {
 	            method = DD;
 	        }
-	        ret += method(str[i]);
+	        ret += method(str.charAt(i));
 	    }
 
 	    // return decodeURI(ret)

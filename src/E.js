@@ -77,7 +77,7 @@ var encrypt = function(str) {
         } else {
             method = ED;
         }
-        ret += method(str[i]);
+        ret += method(str.charAt(i));
     }
 
     return ret;
@@ -103,7 +103,7 @@ var decrypt = function(str) {
         } else {
             method = DD;
         }
-        ret += method(str[i]);
+        ret += method(str.charAt(i));
     }
 
     // return decodeURI(ret)
