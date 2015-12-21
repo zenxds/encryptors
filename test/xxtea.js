@@ -14,6 +14,9 @@ describe('xxtea', function() {
         text = "this is another text to encrypt";
         assert.equal(text, xxtea.decrypt(xxtea.encrypt(text, password), password));
 
+        text = "t";
+        assert.equal(text, xxtea.decrypt(xxtea.encrypt(text, password), password));
+
         password = "qwertyuiop";
         assert.equal(text, xxtea.decrypt(xxtea.encrypt(text, password), password));
     });

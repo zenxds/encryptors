@@ -140,13 +140,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	    // 如果不想依赖Utf8则可以使用原生的encodeURI
 	    var Utf8 = __webpack_require__(1);
 
-	    var nativeAtob = global.atob;
-	    var nativeBtoa = global.btoa;
 	    // code顺序可以自定义
 	    var code = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
 
 	    // http://www.webtoolkit.info/javascript-base64.html
-	    var encode = nativeBtoa || function(input) {
+	    var encode = function(input) {
 	        if (!input) {
 	            return '';
 	        }
@@ -184,7 +182,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        return output;
 	    };
 
-	    var decode = nativeAtob || function(input) {
+	    var decode = function(input) {
 	        if (!input) {
 	            return '';
 	        }
