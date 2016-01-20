@@ -1,6 +1,7 @@
 /**
+ * 对charCode toString
  * 16可以替换成2-36任意
- * @type {Object}
+ * 会增加加密后的长度，不推荐
  */
 module.exports = {
     encrypt: function(str) {

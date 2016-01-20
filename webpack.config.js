@@ -12,10 +12,14 @@ module.exports = {
         'utf8': ['./src/utf8'],
         'base64': ['./src/base64'],
 
-        'E': './src/E',
         'simple16': './src/simple16',
         'xxtea': './src/xxtea',
-        'zero': './src/zero'
+        'zero': './src/zero',
+
+        'E': './src/E',
+        'E2': './src/E2',
+        'E3': './src/E3',
+        'E4': './src/E4'
     },
     output: {
         path: path.join(__dirname, 'dist'),

@@ -1,5 +1,5 @@
 /**
- * 利用零宽字符隐藏
+ * 利用零宽字符隐藏，实际长度也会大大增加
  * http://unicode-table.com/en/search/?q=Zero+Width
  */
 var Utf8 = require('./utf8');

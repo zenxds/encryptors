@@ -54,34 +54,49 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 0 */
 /***/ function(module, exports) {
 
-	/**
-	 * 对charCode toString
-	 * 16可以替换成2-36任意
-	 * 会增加加密后的长度，不推荐
-	 */
-	module.exports = {
-	    encrypt: function(str) {
-	        if (!str) {
-	            return '';
-	        }
-	        var ret = [];
-	        for (var i = 0; i < str.length; i++) {
-	            ret.push(str.charCodeAt(i).toString(16));
-	        }
-	        return ret.join(',');
-	    },
+	// 匹配规则：
+	// 理论上可以更大，没有继续测
+	// 0 < $integer < 100000
 
-	    decrypt: function (str) {
-	        if (!str) {
-	            return '';
-	        }
-	        var ret = [];
-	        str = str.split(',');
-	        for (var i = 0; i < str.length; i++) {
-	            ret.push(String.fromCharCode(parseInt(str[i], 16)));
-	        }
-	        return ret.join('');
+
+	var $integer = 9527;
+
+	var encrypt = function(v) {
+	    if (!v) {
+	        return '';
 	    }
+
+	    var ret = '';
+	    var k = $integer;
+	    for (var i = 0; i < v.length; i++) {
+	        var c = v.charCodeAt(i);
+	        var a = (c ^ k);
+	        k = a;
+	        ret += String.fromCharCode(a);
+	    }
+
+	    return ret;
+	};
+
+	var decrypt = function(v) {
+	    if (!v) {
+	        return '';
+	    }
+
+	    var ret = "";
+	    var k = $integer;
+	    for (var i = 0; i < v.length; i++) {
+	        var c = v.charCodeAt(i);
+	        var a = (c ^ k);
+	        k = c;
+	        ret += String.fromCharCode(a);
+	    }
+	    return ret;
+	};
+
+	module.exports = {
+	    encrypt: encrypt,
+	    decrypt: decrypt
 	};
 
 /***/ }

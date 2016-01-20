@@ -54,34 +54,39 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 0 */
 /***/ function(module, exports) {
 
-	/**
-	 * 对charCode toString
-	 * 16可以替换成2-36任意
-	 * 会增加加密后的长度，不推荐
-	 */
-	module.exports = {
-	    encrypt: function(str) {
-	        if (!str) {
-	            return '';
-	        }
-	        var ret = [];
-	        for (var i = 0; i < str.length; i++) {
-	            ret.push(str.charCodeAt(i).toString(16));
-	        }
-	        return ret.join(',');
-	    },
+	// 对同一数字 ^ 还得到本身
 
-	    decrypt: function (str) {
-	        if (!str) {
-	            return '';
-	        }
-	        var ret = [];
-	        str = str.split(',');
-	        for (var i = 0; i < str.length; i++) {
-	            ret.push(String.fromCharCode(parseInt(str[i], 16)));
-	        }
-	        return ret.join('');
+	// key为任意字符串(a-zA-Z0-9)
+	// 2 < key.length < 10
+	var $key = 'V587';
+
+	var encrypt = function(v) {
+	    if (!v) {
+	        return '';
 	    }
+
+	    var ret = '';
+	    var key = $key;
+	    var k = 0;
+	    for (var i = 0; i < v.length; i++) {
+	        var c = v.charCodeAt(i);
+	        c = (c ^ key.charCodeAt(k));
+
+	        k++;
+	        if (k >= key.length) {
+	            k = 0;
+	        }
+
+	        ret += String.fromCharCode(c);
+	    }
+
+	    return ret;
+	};
+
+	// 加解密函数相同
+	module.exports = {
+	    encrypt: encrypt,
+	    decrypt: encrypt
 	};
 
 /***/ }
