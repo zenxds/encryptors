@@ -14,7 +14,7 @@ var encrypt = function(v) {
     var k = $integer;
     for (var i = 0; i < v.length; i++) {
         var c = v.charCodeAt(i);
-        var a = (c ^ k);
+        var a = c ^ k;
         k = a;
         ret += String.fromCharCode(a);
     }
