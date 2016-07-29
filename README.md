@@ -1,5 +1,8 @@
-
 ## 加/解密函数
+
+[![travis-ci](https://img.shields.io/travis/zenxds/encryptors.svg)](https://travis-ci.org/zenxds/encryptors)
+[![CircleCI](https://img.shields.io/circleci/project/zenxds/encryptors.svg)](https://circleci.com/gh/zenxds/encryptors)
+[![codecov](https://img.shields.io/codecov/c/github/zenxds/encryptors.svg)](https://codecov.io/gh/zenxds/encryptors)
 
 * utf8: 编码成单字节的utf8
 * base64: base64编码

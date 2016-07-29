@@ -9,6 +9,10 @@
   },
   "scripts": {
     "build": "webpack && webpack -p",
-    "test": "mocha --recursive --watch --debug --bail --timeout 30000"
+    "test": "mocha --recursive --debug --bail --timeout 30000",
+    "cover": "node_modules/.bin/istanbul cover node_modules/.bin/_mocha test/*.js"
+  },
+  "dependencies": {
+    "istanbul": "~0.4.4"
   }
 }
