@@ -5,40 +5,40 @@
 
 var $integer = 9527;
 
-var encrypt = function(v) {
-    if (!v) {
-        return '';
-    }
+var encrypt = function (v) {
+  if (!v) {
+    return '';
+  }
 
-    var ret = '';
-    var k = $integer;
-    for (var i = 0; i < v.length; i++) {
-        var c = v.charCodeAt(i);
-        var a = c ^ k;
-        k = a;
-        ret += String.fromCharCode(a);
-    }
+  var ret = '';
+  var k = $integer;
+  for (var i = 0; i < v.length; i++) {
+    var c = v.charCodeAt(i);
+    var a = c ^ k;
+    k = a;
+    ret += String.fromCharCode(a);
+  }
 
-    return ret;
+  return ret;
 };
 
-var decrypt = function(v) {
-    if (!v) {
-        return '';
-    }
+var decrypt = function (v) {
+  if (!v) {
+    return '';
+  }
 
-    var ret = "";
-    var k = $integer;
-    for (var i = 0; i < v.length; i++) {
-        var c = v.charCodeAt(i);
-        var a = (c ^ k);
-        k = c;
-        ret += String.fromCharCode(a);
-    }
-    return ret;
+  var ret = "";
+  var k = $integer;
+  for (var i = 0; i < v.length; i++) {
+    var c = v.charCodeAt(i);
+    var a = (c ^ k);
+    k = c;
+    ret += String.fromCharCode(a);
+  }
+  return ret;
 };
 
 module.exports = {
-    encrypt: encrypt,
-    decrypt: decrypt
+  encrypt: encrypt,
+  decrypt: decrypt
 };
