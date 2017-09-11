@@ -3,10 +3,10 @@
 		module.exports = factory();
 	else if(typeof define === 'function' && define.amd)
 		define([], factory);
-	else {
-		var a = factory();
-		for(var i in a) (typeof exports === 'object' ? exports : root)[i] = a[i];
-	}
+	else if(typeof exports === 'object')
+		exports["dx"] = factory();
+	else
+		root["dx"] = factory();
 })(this, function() {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
@@ -73,8 +73,9 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	return __webpack_require__(__webpack_require__.s = 5);
 /******/ })
 /************************************************************************/
-/******/ ([
-/* 0 */
+/******/ ({
+
+/***/ 0:
 /***/ (function(module, exports) {
 
 // http://www.ruanyifeng.com/blog/2014/12/unicode.html
@@ -149,105 +150,8 @@ module.exports = {
 
 
 /***/ }),
-/* 1 */
-/***/ (function(module, exports, __webpack_require__) {
 
-// 如果不想依赖Utf8则可以使用原生的encodeURI
-var Utf8 = __webpack_require__(0);
-
-// code顺序可以自定义
-var code = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
-
-// http://www.webtoolkit.info/javascript-base64.html
-var encode = function(input) {
-    if (!input) {
-        return '';
-    }
-
-    var output = '';
-    var chr1, chr2, chr3, enc1, enc2, enc3, enc4;
-    var i = 0;
-
-    // input = encodeURI(input);
-    input = Utf8.encode(input);
-
-    while (i < input.length) {
-        chr1 = input.charCodeAt(i++);
-        chr2 = input.charCodeAt(i++);
-        chr3 = input.charCodeAt(i++);
-
-        // 第一个字符前6位
-        enc1 = chr1 >> 2;
-        // 第一个字符后两位加第二个字符前4位
-        enc2 = ((chr1 & 3) << 4) | (chr2 >> 4);
-        // 第二个字符后四位加第三个字符前两位
-        enc3 = ((chr2 & 15) << 2) | (chr3 >> 6);
-        // 第三个字符后六位
-        enc4 = chr3 & 63;
-
-        if (isNaN(chr2)) {
-            enc3 = enc4 = 64;
-        } else if (isNaN(chr3)) {
-            enc4 = 64;
-        }
-
-        output = output + code.charAt(enc1) + code.charAt(enc2) +
-            code.charAt(enc3) + code.charAt(enc4);
-    }
-    return output;
-};
-
-var decode = function(input) {
-    if (!input) {
-        return '';
-    }
-
-    var output = '';
-    var chr1, chr2, chr3;
-    var enc1, enc2, enc3, enc4;
-    var i = 0;
-
-    // 保证格式正确
-    input = input.replace(/[^A-Za-z0-9\+\/\=]/g, '');
-
-    while (i < input.length) {
-
-        enc1 = code.indexOf(input.charAt(i++));
-        enc2 = code.indexOf(input.charAt(i++));
-        enc3 = code.indexOf(input.charAt(i++));
-        enc4 = code.indexOf(input.charAt(i++));
-
-        chr1 = (enc1 << 2) | (enc2 >> 4);
-        chr2 = ((enc2 & 15) << 4) | (enc3 >> 2);
-        chr3 = ((enc3 & 3) << 6) | enc4;
-
-        output = output + String.fromCharCode(chr1);
-        if (enc3 != 64) {
-            output = output + String.fromCharCode(chr2);
-        }
-        if (enc4 != 64) {
-            output = output + String.fromCharCode(chr3);
-        }
-    }
-
-    // output = decodeURI(output);
-    output = Utf8.decode(output);
-    return output;
-};
-
-module.exports = {
-    btoa: encode,
-    atob: decode,
-    encode: encode,
-    decode: decode
-};
-
-
-/***/ }),
-/* 2 */,
-/* 3 */,
-/* 4 */,
-/* 5 */
+/***/ 5:
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -258,7 +162,6 @@ module.exports = {
  * 密钥应该是长度为16的字符
  */
 var Utf8 = __webpack_require__(0);
-var base64 = __webpack_require__(1);
 
 function strToLongs(s, includeLength) {
     var l = new Array(Math.ceil(s.length / 4));
@@ -323,7 +226,8 @@ function encrypt(plaintext, password) {
     var ciphertext = longsToStr(v);
     
     // 使用unicode编码，base64等，只要在解码函数里能解出来就行
-    return base64.encode(ciphertext);
+    // return base64.encode(ciphertext);
+    return ciphertext;
 }
 
 function decrypt(ciphertext, password) {
@@ -331,7 +235,8 @@ function decrypt(ciphertext, password) {
         return '';
     }
 
-    var v = strToLongs(base64.decode(ciphertext));
+    var v = strToLongs(ciphertext);
+    // var v = strToLongs(base64.decode(ciphertext));
     var k = strToLongs(Utf8.encode(password).slice(0, 16));
     var n = v.length;
 
@@ -364,5 +269,6 @@ module.exports = {
 };
 
 /***/ })
-/******/ ]);
+
+/******/ });
 });

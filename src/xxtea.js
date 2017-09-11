@@ -6,7 +6,6 @@
  * 密钥应该是长度为16的字符
  */
 var Utf8 = require('./utf8');
-var base64 = require('./base64');
 
 function strToLongs(s, includeLength) {
     var l = new Array(Math.ceil(s.length / 4));
@@ -36,6 +35,8 @@ function encrypt(plaintext, password) {
     if (!plaintext) {
         return '';
     }
+
+    password = password || 'f6f276c582124489f44d959a53c02117';
 
     var v = strToLongs(Utf8.encode(plaintext), true);
 
@@ -71,15 +72,18 @@ function encrypt(plaintext, password) {
     var ciphertext = longsToStr(v);
     
     // 使用unicode编码，base64等，只要在解码函数里能解出来就行
-    return base64.encode(ciphertext);
+    // return base64.encode(ciphertext);
+    return ciphertext;
 }
 
 function decrypt(ciphertext, password) {
     if (!ciphertext) {
         return '';
     }
+    password = password || 'f6f276c582124489f44d959a53c02117';
 
-    var v = strToLongs(base64.decode(ciphertext));
+    var v = strToLongs(ciphertext);
+    // var v = strToLongs(base64.decode(ciphertext));
     var k = strToLongs(Utf8.encode(password).slice(0, 16));
     var n = v.length;
 
