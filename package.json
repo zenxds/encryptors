@@ -1,18 +1,16 @@
 {
   "name": "encryptors",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "author": "zenxds",
   "devDependencies": {
-    "expect.js": "~0.3.1",
-    "mocha": "~2.3.3",
-    "webpack": "~1.12.9"
+    "expect.js": "^0.3.1",
+    "istanbul": "^0.4.5",
+    "mocha": "^3.5.2",
+    "webpack": "^3.5.6"
   },
   "scripts": {
     "build": "webpack && webpack -p",
-    "test": "mocha --recursive --debug --bail --timeout 30000",
+    "test": "mocha",
     "cover": "node_modules/.bin/istanbul cover node_modules/.bin/_mocha test/*.js"
-  },
-  "dependencies": {
-    "istanbul": "~0.4.4"
   }
 }
