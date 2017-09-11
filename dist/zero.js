@@ -99,55 +99,54 @@ return /******/ (function(modules) { // webpackBootstrap
  *
  */
 function encode(str) {
-    if (!str) {
-        return '';
-    }
+  if (!str) {
+    return '';
+  }
 
-    // U+0080 - U+07FF => 2 bytes 110yyyyy, 10zzzzzz
-    // U+0800 - U+FFFF => 3 bytes 1110xxxx, 10yyyyyy, 10zzzzzz
-    // 拆分后的单字节以1开头，utf8中没有在用
-    return String(str).replace(
-        /[\u0080-\u07ff]/g,
-        function(c) {
-            var cc = c.charCodeAt(0);
-            return String.fromCharCode(0xc0 | cc >> 6, 0x80 | cc & 0x3f);
-        }
-    ).replace(
-        /[\u0800-\uffff]/g,
-        function(c) {
-            var cc = c.charCodeAt(0);
-            return String.fromCharCode(0xe0 | cc >> 12, 0x80 | cc >> 6 & 0x3f, 0x80 | cc & 0x3f);
-        }
-    );
+  // U+0080 - U+07FF => 2 bytes 110yyyyy, 10zzzzzz
+  // U+0800 - U+FFFF => 3 bytes 1110xxxx, 10yyyyyy, 10zzzzzz
+  // 拆分后的单字节以1开头，utf8中没有在用
+  return String(str).replace(
+    /[\u0080-\u07ff]/g,
+    function (c) {
+      var cc = c.charCodeAt(0);
+      return String.fromCharCode(0xc0 | cc >> 6, 0x80 | cc & 0x3f);
+    }
+  ).replace(
+    /[\u0800-\uffff]/g,
+    function (c) {
+      var cc = c.charCodeAt(0);
+      return String.fromCharCode(0xe0 | cc >> 12, 0x80 | cc >> 6 & 0x3f, 0x80 | cc & 0x3f);
+    }
+  );
 }
 
 function decode(str) {
-    if (!str) {
-        return '';
-    }
+  if (!str) {
+    return '';
+  }
 
-    // 跟上面转换过的范围一一对应
-    // note: decode 3-byte chars first as decoded 2-byte strings could appear to be 3-byte char!
-    return str.replace(
-        /[\u00e0-\u00ef][\u0080-\u00bf][\u0080-\u00bf]/g, // 3-byte chars
-        function(c) { // (note parentheses for precence)
-            var cc = ((c.charCodeAt(0) & 0x0f) << 12) | ((c.charCodeAt(1) & 0x3f) << 6) | (c.charCodeAt(2) & 0x3f);
-            return String.fromCharCode(cc);
-        }
-    ).replace(
-        /[\u00c0-\u00df][\u0080-\u00bf]/g, // 2-byte chars
-        function(c) { // (note parentheses for precence)
-            var cc = (c.charCodeAt(0) & 0x1f) << 6 | c.charCodeAt(1) & 0x3f;
-            return String.fromCharCode(cc);
-        }
-    )
+  // 跟上面转换过的范围一一对应
+  // note: decode 3-byte chars first as decoded 2-byte strings could appear to be 3-byte char!
+  return str.replace(
+    /[\u00e0-\u00ef][\u0080-\u00bf][\u0080-\u00bf]/g, // 3-byte chars
+    function (c) { // (note parentheses for precence)
+      var cc = ((c.charCodeAt(0) & 0x0f) << 12) | ((c.charCodeAt(1) & 0x3f) << 6) | (c.charCodeAt(2) & 0x3f);
+      return String.fromCharCode(cc);
+    }
+  ).replace(
+    /[\u00c0-\u00df][\u0080-\u00bf]/g, // 2-byte chars
+    function (c) { // (note parentheses for precence)
+      var cc = (c.charCodeAt(0) & 0x1f) << 6 | c.charCodeAt(1) & 0x3f;
+      return String.fromCharCode(cc);
+    }
+  )
 }
 
 module.exports = {
-    encode: encode,
-    decode: decode
+  encode: encode,
+  decode: decode
 };
-
 
 /***/ }),
 
@@ -162,60 +161,60 @@ var Utf8 = __webpack_require__(0);
 
 // 0宽字符
 var map = {
-    '00': '\u200b',
-    '01': '\u200c',
-    '10': '\u200d',
-    '11': '\uFEFF'
+  '00': '\u200b',
+  '01': '\u200c',
+  '10': '\u200d',
+  '11': '\uFEFF'
 };
 var reverseMap = {};
 
 var key;
 for (key in map) {
-    if (map.hasOwnProperty(key)) {
-        reverseMap[map[key]] = key;
-    }
+  if (map.hasOwnProperty(key)) {
+    reverseMap[map[key]] = key;
+  }
 }
 
 function encrypt(str) {
-    if (!str) {
-        return '';
-    }
+  if (!str) {
+    return '';
+  }
 
-    // 转为单字节
-    str = Utf8.encode(str);
+  // 转为单字节
+  str = Utf8.encode(str);
 
-    var s, ret = [];
-    for (var i = 0; i < str.length; i++) {
-        s = str.charCodeAt(i).toString(2);
-        // 补足八位
-        s = s.length < 8 ? new Array(9 - s.length).join('0') + s : s;
+  var s, ret = [];
+  for (var i = 0; i < str.length; i++) {
+    s = str.charCodeAt(i).toString(2);
+    // 补足八位
+    s = s.length < 8 ? new Array(9 - s.length).join('0') + s : s;
 
-        // 每两位替换成一个字符
-        ret.push(s.replace(/../g, function(k) {
-            return map[k];
-        }));
-    }
-    return ret.join('');
+    // 每两位替换成一个字符
+    ret.push(s.replace(/../g, function (k) {
+      return map[k];
+    }));
+  }
+  return ret.join('');
 }
 
 function decrypt(str) {
-    if (!str) {
-        return '';
-    }
+  if (!str) {
+    return '';
+  }
 
-    // 每4个0宽字符要生成一个
-    str = str.replace(/.{4}/g, function(s) {
-        return String.fromCharCode(parseInt(s.replace(/./g, function(k) {
-            return reverseMap[k];
-        }), 2));
-    });
+  // 每4个0宽字符要生成一个
+  str = str.replace(/.{4}/g, function (s) {
+    return String.fromCharCode(parseInt(s.replace(/./g, function (k) {
+      return reverseMap[k];
+    }), 2));
+  });
 
-    return Utf8.decode(str);
+  return Utf8.decode(str);
 }
 
 module.exports = {
-    encrypt: encrypt,
-    decrypt: decrypt
+  encrypt: encrypt,
+  decrypt: decrypt
 }
 
 /***/ })

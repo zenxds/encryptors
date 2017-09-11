@@ -22,14 +22,14 @@ function strToLongs(s, includeLength) {
     return l;
 }
 
-function longsToStr(l) { // convert array of longs back to string
+function longsToStr(l, includeLength) { // convert array of longs back to string
     var a = new Array(l.length);
     for (var i = 0; i < l.length; i++) {
         a[i] = String.fromCharCode(l[i] & 0xFF, l[i] >>> 8 & 0xFF,
             l[i] >>> 16 & 0xFF, l[i] >>> 24 & 0xFF);
     }
 
-    return a.join('');
+    return includeLength ? a.join('').substring(0, (l.length - 1) << 2) : a.join('');
 }
 
 function encrypt(plaintext, password) {
@@ -102,7 +102,7 @@ function decrypt(ciphertext, password) {
     }
 
     // ---- </TEA> ----
-    var plaintext = longsToStr(v).replace(/\u0000/g, '');
+    var plaintext = longsToStr(v, true).replace(/\u0000/g, '');
     return Utf8.decode(plaintext);
 }
 
