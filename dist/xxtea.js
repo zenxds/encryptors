@@ -260,13 +260,16 @@ module.exports = {
 var Utf8 = __webpack_require__(0);
 var base64 = __webpack_require__(1);
 
-function strToLongs(s) {
+function strToLongs(s, includeLength) {
     var l = new Array(Math.ceil(s.length / 4));
     for (var i = 0; i < l.length; i++) {
         // note little-endian encoding - endianness is irrelevant as long as
         // it is the same in longsToStr()
         l[i] = s.charCodeAt(i * 4) + (s.charCodeAt(i * 4 + 1) << 8) +
             (s.charCodeAt(i * 4 + 2) << 16) + (s.charCodeAt(i * 4 + 3) << 24);
+    }
+    if (includeLength) {
+        l.push(s.length)
     }
     return l;
 }
@@ -286,7 +289,7 @@ function encrypt(plaintext, password) {
         return '';
     }
 
-    var v = strToLongs(Utf8.encode(plaintext));
+    var v = strToLongs(Utf8.encode(plaintext), true);
 
     // 算法不支持长度小于2，手动添加一个值
     if (v.length <= 1) {
@@ -318,7 +321,7 @@ function encrypt(plaintext, password) {
     // ---- </TEA> ----
 
     var ciphertext = longsToStr(v);
-
+    
     // 使用unicode编码，base64等，只要在解码函数里能解出来就行
     return base64.encode(ciphertext);
 }
