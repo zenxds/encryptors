@@ -8,6 +8,7 @@ describe('utf8', function () {
   it('should encode and decode 1 byte string', function () {
     var str = "abcd";
     assert.equal(str, Utf8.decode(Utf8.encode(str)));
+    assert.equal(str, Utf8.encode(str));
   });
 
   it('should encode and decode 2 bytes string', function () {

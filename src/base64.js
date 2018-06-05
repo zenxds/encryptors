@@ -15,6 +15,7 @@ var encode = function (input) {
   var i = 0;
 
   // input = encodeURI(input);
+  // input = unescape(encodeURIComponent(input));
   input = Utf8.encode(input);
 
   while (i < input.length) {
@@ -77,6 +78,7 @@ var decode = function (input) {
   }
 
   // output = decodeURI(output);
+  // output = decodeURIComponent(escape(output))
   output = Utf8.decode(output);
   return output;
 };
