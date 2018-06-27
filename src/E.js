@@ -10,7 +10,6 @@
 const Utf8 = require('./utf8')
 
 const encryptTemplate = function (left, right) {
-
   return function (v) {
     let ret = ''
 
@@ -29,6 +28,7 @@ const encryptTemplate = function (left, right) {
 const decryptTemplate = function (left, right) {
   return function (v) {
     let ret = ''
+
     for (let i = 0; i < v.length; i++) {
       let c = v.charCodeAt(i)
       let a = c >> left

@@ -2,8 +2,8 @@
 
 // key为任意字符串(a-zA-Z0-9)
 // $integer理论上任意数字
-const $key = 'V587';
-const $integer = 10000;
+const $key = 'V587'
+const $integer = 10000
 
 const encrypt = function (v) {
   if (!v) {
@@ -11,7 +11,7 @@ const encrypt = function (v) {
   }
 
   let ret = ''
-  let key = $key;
+  let key = $key
   let k = $integer
 
   for (let i = 0; i < v.length; i++) {
