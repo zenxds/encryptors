@@ -3,14 +3,18 @@
   "version": "0.1.1",
   "author": "zenxds",
   "devDependencies": {
+    "@babel/core": "^7.0.0-beta.51",
+    "@babel/preset-env": "^7.0.0-beta.51",
+    "@babel/register": "^7.0.0-beta.51",
+    "babel-loader": "^8.0.0-beta",
     "expect.js": "^0.3.1",
-    "istanbul": "^0.4.5",
-    "mocha": "^3.5.2",
-    "webpack": "^3.5.6"
+    "mocha": "^5.2.0",
+    "webpack": "^4.12.2",
+    "webpack-cli": "^3.0.8"
   },
   "scripts": {
     "build": "webpack && webpack -p",
-    "test": "mocha",
-    "cover": "node_modules/.bin/istanbul cover node_modules/.bin/_mocha test/*.js"
+    "test": "mocha --require @babel/register",
+    "cover": "nyc npm test"
   }
 }

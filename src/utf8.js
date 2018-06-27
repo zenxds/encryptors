@@ -20,7 +20,7 @@
  */
 function encode(str) {
   if (!str) {
-    return '';
+    return ''
   }
 
   // U+0080 - U+07FF => 2 bytes 110yyyyy, 10zzzzzz
@@ -29,21 +29,21 @@ function encode(str) {
   return String(str).replace(
     /[\u0080-\u07ff]/g,
     function (c) {
-      var cc = c.charCodeAt(0);
-      return String.fromCharCode(0xc0 | cc >> 6, 0x80 | cc & 0x3f);
+      let cc = c.charCodeAt(0)
+      return String.fromCharCode(0xc0 | cc >> 6, 0x80 | cc & 0x3f)
     }
   ).replace(
     /[\u0800-\uffff]/g,
     function (c) {
-      var cc = c.charCodeAt(0);
-      return String.fromCharCode(0xe0 | cc >> 12, 0x80 | cc >> 6 & 0x3f, 0x80 | cc & 0x3f);
+      let cc = c.charCodeAt(0)
+      return String.fromCharCode(0xe0 | cc >> 12, 0x80 | cc >> 6 & 0x3f, 0x80 | cc & 0x3f)
     }
-  );
+  )
 }
 
 function decode(str) {
   if (!str) {
-    return '';
+    return ''
   }
 
   // 跟上面转换过的范围一一对应
@@ -51,14 +51,14 @@ function decode(str) {
   return str.replace(
     /[\u00e0-\u00ef][\u0080-\u00bf][\u0080-\u00bf]/g, // 3-byte chars
     function (c) { // (note parentheses for precence)
-      var cc = ((c.charCodeAt(0) & 0x0f) << 12) | ((c.charCodeAt(1) & 0x3f) << 6) | (c.charCodeAt(2) & 0x3f);
-      return String.fromCharCode(cc);
+      let cc = ((c.charCodeAt(0) & 0x0f) << 12) | ((c.charCodeAt(1) & 0x3f) << 6) | (c.charCodeAt(2) & 0x3f)
+      return String.fromCharCode(cc)
     }
   ).replace(
     /[\u00c0-\u00df][\u0080-\u00bf]/g, // 2-byte chars
     function (c) { // (note parentheses for precence)
-      var cc = (c.charCodeAt(0) & 0x1f) << 6 | c.charCodeAt(1) & 0x3f;
-      return String.fromCharCode(cc);
+      let cc = (c.charCodeAt(0) & 0x1f) << 6 | c.charCodeAt(1) & 0x3f
+      return String.fromCharCode(cc)
     }
   )
 }
@@ -66,4 +66,4 @@ function decode(str) {
 module.exports = {
   encode: encode,
   decode: decode
-};
+}

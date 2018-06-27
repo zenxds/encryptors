@@ -3,42 +3,43 @@
 // 0 < $integer < 100000
 
 
-var $integer = 9527;
+const $integer = 9527
 
-var encrypt = function (v) {
+const encrypt = function (v) {
   if (!v) {
-    return '';
+    return ''
   }
 
-  var ret = '';
-  var k = $integer;
-  for (var i = 0; i < v.length; i++) {
-    var c = v.charCodeAt(i);
-    var a = c ^ k;
-    k = a;
-    ret += String.fromCharCode(a);
+  let ret = ''
+  let k = $integer
+
+  for (let i = 0; i < v.length; i++) {
+    let c = v.charCodeAt(i)
+    let a = c ^ k
+    k = a
+    ret += String.fromCharCode(a)
   }
 
-  return ret;
-};
+  return ret
+}
 
-var decrypt = function (v) {
+const decrypt = function (v) {
   if (!v) {
-    return '';
+    return ''
   }
 
-  var ret = "";
-  var k = $integer;
-  for (var i = 0; i < v.length; i++) {
-    var c = v.charCodeAt(i);
-    var a = (c ^ k);
-    k = c;
-    ret += String.fromCharCode(a);
+  let ret = ""
+  let k = $integer
+  for (let i = 0; i < v.length; i++) {
+    let c = v.charCodeAt(i)
+    let a = (c ^ k)
+    k = c
+    ret += String.fromCharCode(a)
   }
-  return ret;
-};
+  return ret
+}
 
 module.exports = {
   encrypt: encrypt,
   decrypt: decrypt
-};
+}
