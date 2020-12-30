@@ -3,11 +3,19 @@
 		module.exports = factory();
 	else if(typeof define === 'function' && define.amd)
 		define([], factory);
+<<<<<<< HEAD
 	else {
 		var a = factory();
 		for(var i in a) (typeof exports === 'object' ? exports : root)[i] = a[i];
 	}
 })(window, function() {
+=======
+	else if(typeof exports === 'object')
+		exports["dx"] = factory();
+	else
+		root["dx"] = factory();
+})(this, function() {
+>>>>>>> sdk
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -94,12 +102,19 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	return __webpack_require__(__webpack_require__.s = 7);
 /******/ })
 /************************************************************************/
+<<<<<<< HEAD
 /******/ ([
 /* 0 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
+=======
+/******/ ({
+
+/***/ 0:
+/***/ (function(module, exports) {
+>>>>>>> sdk
 
 // http://www.ruanyifeng.com/blog/2014/12/unicode.html
 //
@@ -162,6 +177,7 @@ module.exports = {
 };
 
 /***/ }),
+<<<<<<< HEAD
 /* 1 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -262,6 +278,10 @@ module.exports = {
 /* 5 */,
 /* 6 */,
 /* 7 */
+=======
+
+/***/ 5:
+>>>>>>> sdk
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -275,8 +295,11 @@ module.exports = {
  * 密钥应该是长度为16的字符
  */
 var Utf8 = __webpack_require__(0);
+<<<<<<< HEAD
 
 var base64 = __webpack_require__(1);
+=======
+>>>>>>> sdk
 
 function strToLongs(s, includeLength) {
   var l = new Array(Math.ceil(s.length / 4));
@@ -341,9 +364,17 @@ function encrypt(plaintext, password) {
   } // ---- </TEA> ----
 
 
+<<<<<<< HEAD
   var ciphertext = longsToStr(v); // 使用unicode编码，base64等，只要在解码函数里能解出来就行
 
   return base64.encode(ciphertext);
+=======
+    var ciphertext = longsToStr(v);
+    
+    // 使用unicode编码，base64等，只要在解码函数里能解出来就行
+    // return base64.encode(ciphertext);
+    return ciphertext;
+>>>>>>> sdk
 }
 
 function decrypt(ciphertext, password) {
@@ -372,9 +403,34 @@ function decrypt(ciphertext, password) {
       y = v[p] -= mx;
     }
 
+<<<<<<< HEAD
     sum -= delta;
   } // ---- </TEA> ----
 
+=======
+    var v = strToLongs(ciphertext);
+    // var v = strToLongs(base64.decode(ciphertext));
+    var k = strToLongs(Utf8.encode(password).slice(0, 16));
+    var n = v.length;
+
+    // ---- <TEA decoding> ----
+
+    var z = v[n - 1],
+        y = v[0],
+        delta = 0x9E3779B9;
+    var mx, e, q = Math.floor(6 + 52 / n),
+        sum = q * delta;
+
+    while (sum != 0) {
+        e = sum >>> 2 & 3;
+        for (var p = n - 1; p >= 0; p--) {
+            z = v[p > 0 ? p - 1 : n - 1];
+            mx = (z >>> 5 ^ y << 2) + (y >>> 3 ^ z << 4) ^ (sum ^ y) + (k[p & 3 ^ e] ^ z);
+            y = v[p] -= mx;
+        }
+        sum -= delta;
+    }
+>>>>>>> sdk
 
   var plaintext = longsToStr(v, true).replace(/\u0000/g, '');
   return Utf8.decode(plaintext);
@@ -386,5 +442,6 @@ module.exports = {
 };
 
 /***/ })
-/******/ ]);
+
+/******/ });
 });

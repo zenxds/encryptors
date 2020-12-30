@@ -1,7 +1,20 @@
 const path = require('path')
 const webpack = require("webpack")
+// const TsukuyomiPlugin = require('@dx/tsukuyomi/plugin/webpack')
 
 const minimize = process.argv.indexOf('-p') > -1
+// const plugins = [
+//   new TsukuyomiPlugin({
+//     compress: true,
+//     mangle: true,
+//     'encrypt-string': {
+//       percent: 100
+//     },
+//     'split-string': {
+//       percent: 100
+//     }
+//   })
+// ]
 
 module.exports = {
   mode: 'production',
@@ -23,7 +36,8 @@ module.exports = {
 
   output: {
     path: path.join(__dirname, 'dist'),
-    filename: minimize ? '[name].min.js' : '[name].js',
+    filename: '[name].min.js',
+    library: 'dx',
     libraryTarget: 'umd'
   },
 
@@ -39,5 +53,5 @@ module.exports = {
         use: 'babel-loader'
       }
     ]
-  }
+  },
 }

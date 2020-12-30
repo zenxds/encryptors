@@ -3,11 +3,19 @@
 		module.exports = factory();
 	else if(typeof define === 'function' && define.amd)
 		define([], factory);
+<<<<<<< HEAD
 	else {
 		var a = factory();
 		for(var i in a) (typeof exports === 'object' ? exports : root)[i] = a[i];
 	}
 })(window, function() {
+=======
+	else if(typeof exports === 'object')
+		exports["dx"] = factory();
+	else
+		root["dx"] = factory();
+})(this, function() {
+>>>>>>> sdk
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -91,7 +99,11 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/
 /******/
 /******/ 	// Load entry module and return exports
+<<<<<<< HEAD
 /******/ 	return __webpack_require__(__webpack_require__.s = 0);
+=======
+/******/ 	return __webpack_require__(__webpack_require__.s = 1);
+>>>>>>> sdk
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -161,6 +173,17 @@ module.exports = {
   decode: decode
 };
 
+<<<<<<< HEAD
+=======
+
+/***/ }),
+/* 1 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(0);
+
+
+>>>>>>> sdk
 /***/ })
 /******/ ]);
 });

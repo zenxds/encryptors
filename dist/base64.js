@@ -3,11 +3,19 @@
 		module.exports = factory();
 	else if(typeof define === 'function' && define.amd)
 		define([], factory);
+<<<<<<< HEAD
 	else {
 		var a = factory();
 		for(var i in a) (typeof exports === 'object' ? exports : root)[i] = a[i];
 	}
 })(window, function() {
+=======
+	else if(typeof exports === 'object')
+		exports["dx"] = factory();
+	else
+		root["dx"] = factory();
+})(this, function() {
+>>>>>>> sdk
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -91,7 +99,11 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/
 /******/
 /******/ 	// Load entry module and return exports
+<<<<<<< HEAD
 /******/ 	return __webpack_require__(__webpack_require__.s = 1);
+=======
+/******/ 	return __webpack_require__(__webpack_require__.s = 2);
+>>>>>>> sdk
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -162,7 +174,15 @@ module.exports = {
 };
 
 /***/ }),
-/* 1 */
+/* 1 */,
+/* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(3);
+
+
+/***/ }),
+/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -237,6 +257,7 @@ var decode = function decode(input) {
       output = output + String.fromCharCode(chr2);
     }
 
+<<<<<<< HEAD
     if (enc4 != 64) {
       output = output + String.fromCharCode(chr3);
     }
@@ -255,6 +276,8 @@ module.exports = {
   decode: decode
 };
 
+=======
+>>>>>>> sdk
 /***/ })
 /******/ ]);
 });
